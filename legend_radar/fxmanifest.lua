@@ -2,9 +2,9 @@ fx_version 'cerulean'
 game 'gta5'
 
 -- Definiere die Ressource
-name 'deine_ressourcen_bezeichnung'
-description 'Beschreibung deiner Ressource'
-author 'Dein Name'
+name 'Legend Radar'
+description 'Radar script for Police'
+author 'Kugelspitzer'
 
 -- Definiere die Client-Skripte
 client_scripts {
