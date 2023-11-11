@@ -1,6 +1,6 @@
-local showingInfo = false  -- Variable, um den Anzeigestatus zu verfolgen
-local scannedVehicle = nil  -- Variable, um das gescannte Fahrzeug zu speichern
-local maxScanDistance = 50.0  -- Maximale Distanz für das Scannen
+local showingInfo = false
+local scannedVehicle = nil  
+local maxScanDistance = 50.0  
 
 Citizen.CreateThread(function()
     while true do
@@ -9,17 +9,17 @@ Citizen.CreateThread(function()
         local playerPed = GetPlayerPed(-1)
         local playerCar = GetVehiclePedIsIn(playerPed, false)
 
-        -- Überprüfe, ob der Spieler im spezifischen Fahrzeug sitzt
+      
         if DoesEntityExist(playerCar) then
             local modelName = GetDisplayNameFromVehicleModel(GetEntityModel(playerCar))
 
             if modelName == "POLICE4" then
-                showingInfo = true  -- Setze den Anzeigestatus auf 'true', wenn im spezifischen Fahrzeug
+                showingInfo = true 
             else
-                showingInfo = false  -- Setze den Anzeigestatus auf 'false', wenn nicht im spezifischen Fahrzeug
+                showingInfo = false
             end
         else
-            showingInfo = false  -- Setze den Anzeigestatus auf 'false', wenn nicht im Auto
+            showingInfo = false
         end
     end
 end)
@@ -40,7 +40,7 @@ Citizen.CreateThread(function()
                 local isPlayerInFrontOfCar = distance < 3.0
 
                 if isPlayerInFrontOfCar then
-                    scannedVehicle = nil  -- Setze das gescannte Fahrzeug zurück, wenn der Spieler vor dem Auto steht
+                    scannedVehicle = nil
                 end
 
                 local nearbyVehicles = GetGamePool('CVehicle')
@@ -51,7 +51,7 @@ Citizen.CreateThread(function()
                             local distance = Vdist(playerPos.x, playerPos.y, playerPos.z, vehiclePos.x, vehiclePos.y, vehiclePos.z)
                             
                             if distance < maxScanDistance then
-                                scannedVehicle = vehicle  -- Setze das gefundene Fahrzeug als gescanntes Fahrzeug
+                                scannedVehicle = vehicle
                                 break
                             end
                         end
@@ -59,14 +59,14 @@ Citizen.CreateThread(function()
                 end
 
                 if scannedVehicle ~= nil then
-                    local vehicleSpeed = GetEntitySpeed(scannedVehicle) * 3.6  -- Geschwindigkeit in km/h
+                    local vehicleSpeed = GetEntitySpeed(scannedVehicle) * 3.6
                     local vehiclePlate = GetVehicleNumberPlateText(scannedVehicle)
                     local vehicleName = GetLabelText(GetDisplayNameFromVehicleModel(GetEntityModel(scannedVehicle)))
                     
-                    -- Anzeigeformat für die Fahrzeuginformationen
+
                     local displayText = string.format("Kennzeichen: %s\nGeschwindigkeit: %.2f km/h\nAuto Name: %s", vehiclePlate, vehicleSpeed, vehicleName)
 
-                    -- Zeige die Informationen auf dem HUD an
+
                     SetTextScale(0.4, 0.4)
                     SetTextFont(0)
                     SetTextProportional(1)
@@ -76,14 +76,14 @@ Citizen.CreateThread(function()
                     SetTextOutline()
                     SetTextEntry("STRING")
                     AddTextComponentString(displayText)
-                    DrawText(0.2, 0.8)  -- Ändere die Position je nach Bedarf
+                    DrawText(0.2, 0.8)
 
-                    -- Pfeil über dem Fahrzeug
+
                     local vehicleCoords = GetEntityCoords(scannedVehicle)
                     DrawMarker(0, vehicleCoords.x, vehicleCoords.y, vehicleCoords.z + 2.0, 0, 0, 0, 0, 0, 0, 1.0, 1.0, 1.0, 255, 0, 0, 200, false, false, 2, nil, nil, false)
                 end
             else
-                scannedVehicle = nil  -- Setze das gescannte Fahrzeug zurück, wenn der Spieler nicht mehr im Auto ist
+                scannedVehicle = nil
             end
         end
     end
